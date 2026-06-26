@@ -1,0 +1,88 @@
+---
+import AnimatedGradientBackground from "./AnimatedGradientBackground.astro";
+---
+
+<div class="animated-gradient-examples">
+  <button class="gradient-button">
+    <AnimatedGradientBackground
+      speed={0.07}
+      warpStrength={0.15}
+      noiseScale={0.48}
+      brightness={1.15}
+      grainStrength={0.03}
+      interactive={true}
+      mouseInfluence={0.18}
+      quality="medium"
+    />
+
+    <span class="gradient-button__content">
+      Book a free call
+    </span>
+  </button>
+
+  <article class="gradient-card">
+    <AnimatedGradientBackground
+      colors={["#0027B6", "#32B2E4", "#FDDA83", "#FF8748", "#F81500"]}
+      speed={0.05}
+      warpStrength={0.12}
+      noiseScale={0.55}
+      brightness={1.08}
+      grainStrength={0.025}
+      interactive={true}
+      mouseInfluence={0.14}
+      quality="medium"
+    />
+
+    <div class="gradient-card__content">
+      <p>Organic gradient card</p>
+      <h2>Soft animated color field</h2>
+    </div>
+  </article>
+</div>
+
+<style>
+  .animated-gradient-examples {
+    display: grid;
+    gap: 24px;
+  }
+
+  .gradient-button {
+    position: relative;
+    isolation: isolate;
+    min-width: 280px;
+    min-height: 72px;
+    padding: 0 32px;
+    overflow: hidden;
+    border: 0;
+    border-radius: 16px;
+    color: #111111;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .gradient-button__content,
+  .gradient-card__content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .gradient-card {
+    position: relative;
+    isolation: isolate;
+    min-height: 220px;
+    padding: 32px;
+    overflow: hidden;
+    border-radius: 20px;
+    color: #111111;
+  }
+
+  .gradient-card__content {
+    display: grid;
+    gap: 8px;
+  }
+
+  .gradient-card__content > * {
+    margin: 0;
+  }
+</style>
+

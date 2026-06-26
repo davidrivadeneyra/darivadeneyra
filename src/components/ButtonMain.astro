@@ -1,0 +1,33 @@
+---
+interface Props {
+  firstLine?: string;
+  secondLine?: string;
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  newPage?: boolean;
+}
+
+const {
+  firstLine = "Let's work together",
+  href = 'https://wa.me/51942676263',
+  type = 'button',
+  newPage = true
+} = Astro.props;
+
+const Tag = href ? 'a' : 'button';
+---
+
+<Tag
+  class="button-main"
+  href={href}
+  type={href ? undefined : type}
+  target={href && newPage ? '_blank' : undefined}
+  rel={href && newPage ? 'noopener noreferrer' : undefined}
+  data-animate="button-main"
+>
+  <span class="button-main__background" aria-hidden="true"></span>
+  <span class="button-main__inner">
+    <span class="button-main__triangle" aria-hidden="true"></span>
+    {firstLine}
+  </span>
+</Tag>

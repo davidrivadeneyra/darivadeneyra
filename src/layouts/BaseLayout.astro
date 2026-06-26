@@ -1,0 +1,87 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import '../styles/output.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: string;
+}
+
+const {
+  title = 'David Rivadeneyra — Web Brand Design & Development',
+  description = 'David Rivadeneyra is a web designer and developer specializing in creating websites that match your reputation. Explore his portfolio and services to elevate your online presence.',
+  image = '/shapes/Open%20Graph.png',
+  type = 'website'
+} = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.url).toString();
+const socialImageUrl = new URL(image, Astro.url).toString();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={socialImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="David Rivadeneyra - Web Design & Development" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageUrl} />
+    <title>{title}</title>
+    <ClientRouter />
+  </head>
+  <body>
+    <slot />
+    <script>
+      import '../scripts/animations';
+    </script>
+    <script>
+      const titlePromptWindow = window as Window & {
+        __returnTitlePromptCleanup?: () => void;
+      };
+
+      titlePromptWindow.__returnTitlePromptCleanup?.();
+
+      const awayTitle = "Come back - let's work together";
+      let activeTitle = document.title;
+
+      const syncActiveTitle = () => {
+        if (!document.hidden) {
+          activeTitle = document.title;
+        }
+      };
+
+      const handleVisibilityChange = () => {
+        if (document.hidden) {
+          activeTitle = document.title;
+          document.title = awayTitle;
+          return;
+        }
+
+        document.title = activeTitle;
+      };
+
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+      document.addEventListener('astro:page-load', syncActiveTitle);
+
+      titlePromptWindow.__returnTitlePromptCleanup = () => {
+        document.removeEventListener('visibilitychange', handleVisibilityChange);
+        document.removeEventListener('astro:page-load', syncActiveTitle);
+      };
+    </script>
+  </body>
+</html>

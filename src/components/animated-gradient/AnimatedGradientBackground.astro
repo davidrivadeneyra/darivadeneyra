@@ -1,0 +1,100 @@
+---
+import type { AnimatedGradientProps, GradientColors } from "./types";
+
+export interface Props extends AnimatedGradientProps {}
+
+const {
+  colors = [
+    "#263D9B",
+    "#39BFC8",
+    "#FFD166",
+    "#FF7657",
+    "#FFAA62",
+  ],
+  speed = 0.08,
+  warpStrength = 0.18,
+  noiseScale = 0.5,
+  brightness = 1.1,
+  grainStrength = 0.04,
+  interactive = true,
+  mouseInfluence = 0.2,
+  paused = false,
+  quality = "medium",
+  class: className = "",
+} = Astro.props;
+
+const gradientColors = colors as GradientColors;
+const fallbackStyle = gradientColors
+  .map((color, index) => `--animated-gradient-color-${index + 1}: ${color}`)
+  .join("; ");
+---
+
+<div
+  class:list={["animated-gradient", className]}
+  data-animated-gradient
+  data-colors={JSON.stringify(gradientColors)}
+  data-speed={speed}
+  data-warp-strength={warpStrength}
+  data-noise-scale={noiseScale}
+  data-brightness={brightness}
+  data-grain-strength={grainStrength}
+  data-interactive={interactive}
+  data-mouse-influence={mouseInfluence}
+  data-paused={paused}
+  data-quality={quality}
+  style={fallbackStyle}
+  aria-hidden="true"
+>
+  <canvas></canvas>
+</div>
+
+<script>
+  import { initAnimatedGradients } from "./AnimatedGradient";
+
+  initAnimatedGradients();
+</script>
+
+<style>
+  .animated-gradient {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  .animated-gradient canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .animated-gradient.is-fallback {
+    background:
+      radial-gradient(
+        circle at 15% 80%,
+        var(--animated-gradient-color-1),
+        transparent 45%
+      ),
+      radial-gradient(
+        circle at 30% 20%,
+        var(--animated-gradient-color-2),
+        transparent 42%
+      ),
+      radial-gradient(
+        circle at 58% 35%,
+        var(--animated-gradient-color-3),
+        transparent 48%
+      ),
+      radial-gradient(
+        circle at 85% 45%,
+        var(--animated-gradient-color-4),
+        transparent 45%
+      ),
+      var(--animated-gradient-color-5);
+  }
+</style>
+

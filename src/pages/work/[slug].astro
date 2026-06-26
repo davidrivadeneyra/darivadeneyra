@@ -1,0 +1,78 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import GlobalNavigation from '../../components/GlobalNavigation.astro';
+import HeroSectionBackground from '../../components/HeroSectionBackground.astro';
+import LinkMain from '../../components/LinkMain.astro';
+
+interface CaseFrontmatter {
+  title: string;
+  description: string;
+  sector: string;
+  services: string[];
+  order?: number;
+  images: string[];
+}
+
+interface CasePage {
+  slug: string;
+  frontmatter: CaseFrontmatter;
+  Content: any;
+}
+
+export function getStaticPaths() {
+  const caseModules = import.meta.glob('../../content/cases/*.md', { eager: true });
+
+  return Object.entries(caseModules).map(([path, module]) => {
+    const slug = path.split('/').pop()?.replace('.md', '') ?? '';
+    const typedModule = module as { frontmatter: CaseFrontmatter; Content: any };
+
+    return {
+      params: { slug },
+      props: {
+        casePage: {
+          slug,
+          frontmatter: typedModule.frontmatter,
+          Content: typedModule.Content
+        }
+      }
+    };
+  });
+}
+
+const { casePage } = Astro.props as { casePage: CasePage };
+const { frontmatter, Content } = casePage;
+const meta = [frontmatter.sector, ...frontmatter.services].filter(Boolean).join(' - ');
+---
+
+<BaseLayout title={`${frontmatter.title} | David Rivadeneyra`}>
+  <GlobalNavigation />
+  <main>
+    <section class="work-shell case-shell">
+      <HeroSectionBackground showShapes={false} />
+
+      <div class="section-content work-shell__content case-shell__content">
+        <header class="case-hero">
+          <LinkMain label="Back to work" direction="right" state="active" href="/work" />
+          <p class="work-shell__eyebrow">{meta}</p>
+          <h1 class="work-shell__title">{frontmatter.title}</h1>
+          <p class="case-hero__description">{frontmatter.description}</p>
+        </header>
+
+        <div class="case-images">
+          {frontmatter.images.map((image, index) => (
+            <img
+              class:list={['case-images__image', index === 0 && 'case-images__image--main']}
+              src={image}
+              alt=""
+              loading={index === 0 ? 'eager' : 'lazy'}
+            />
+          ))}
+        </div>
+
+        <div class="case-body">
+          <Content />
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

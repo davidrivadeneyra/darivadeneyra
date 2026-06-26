@@ -1,0 +1,30 @@
+---
+import BrandLogo from './BrandLogo.astro';
+import LinkMain from './LinkMain.astro';
+
+const pathname = Astro.url.pathname;
+const isHome = pathname === '/';
+const isWork = pathname.startsWith('/work');
+---
+
+<div class="home-hero__brand">
+  <BrandLogo />
+
+  <nav class="home-hero__nav items-end justify-end" aria-label="Primary navigation">
+    <LinkMain label="Home" direction="left" state={isHome ? 'active' : 'inactive'} href="/" />
+    <LinkMain label="Work" direction="left" state={isWork ? 'active' : 'inactive'} href="/work" />
+    <!-- <LinkMain label="About" direction="left" state="inactive" href="/" /> -->
+    <LinkMain
+  label="Let's Talk"
+  direction="left"
+  state="inactive"
+  href="https://wa.me/51942676263"
+/>
+  </nav>
+
+  <div class="home-hero__lang" aria-label="Language selector">
+    <LinkMain label="Linkedin" direction="left" state="inactive" href="https://www.linkedin.com/in/davidrivadeneyra/" newPage/>
+    <LinkMain label="TikTok" direction="left" state="inactive" href="https://www.tiktok.com/@darivadeneyra" newPage/>
+    <LinkMain label="Instagram" direction="left" state="inactive" href="https://www.instagram.com/davidrivadeneyra/" newPage/>
+  </div>
+</div>

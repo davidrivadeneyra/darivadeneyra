@@ -1,0 +1,28 @@
+---
+interface Props {
+  direction?: 'left' | 'right' | 'Left' | 'Right';
+  color?: string;
+  class?: string;
+  label?: string;
+}
+
+const {
+  direction = 'left',
+  color,
+  class: className = '',
+  label = ''
+} = Astro.props;
+
+const normalizedDirection = direction.toLowerCase() === 'right' ? 'right' : 'left';
+const clipPath = normalizedDirection === 'right'
+  ? '[clip-path:polygon(100%_0,100%_100%,0_0)]'
+  : '[clip-path:polygon(0_0,100%_0,0_100%)]';
+const style = color ? `color: ${color};` : undefined;
+---
+
+<span
+  class:list={['block shrink-0 bg-current text-current', clipPath, className]}
+  style={style}
+  aria-hidden={label ? undefined : 'true'}
+  aria-label={label || undefined}
+></span>

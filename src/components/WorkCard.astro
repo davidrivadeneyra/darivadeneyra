@@ -1,0 +1,35 @@
+---
+import LinkMain from './LinkMain.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  sector: string;
+  services: string[];
+  image: string;
+  href: string;
+}
+
+const { title, description, sector, services, image, href } = Astro.props;
+const meta = [sector, ...services].filter(Boolean).join(' - ');
+const shortDescription = description.length > 128
+  ? `${description.slice(0, 125).trim()}...`
+  : description;
+---
+
+<article class="work-card">
+  <a class="work-card__image-link" href={href} aria-label={`See project ${title}`}>
+    <img class="work-card__image" src={image} alt="" loading="lazy" />
+  </a>
+
+  <div class="work-card__body">
+    <div class="work-card__heading">
+      <h2 class="work-card__title">{title}</h2>
+      <p class="work-card__meta">{meta}</p>
+    </div>
+
+    <p class="work-card__description">{shortDescription}</p>
+
+    <LinkMain label="See project" direction="right" state="active" href={href} />
+  </div>
+</article>

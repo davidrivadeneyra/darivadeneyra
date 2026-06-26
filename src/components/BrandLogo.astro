@@ -1,0 +1,16 @@
+---
+interface Props {
+  size?: 'default' | 'small';
+  label?: string;
+}
+
+const { size = 'default', label = 'David Rivadeneyra' } = Astro.props;
+const className = ['brand-logo', size === 'small' ? 'brand-logo--small' : ''].filter(Boolean).join(' ');
+---
+
+<!-- <link rel="preload" href="/brand/logo.svg" as="image" class={className} 
+/> -->
+
+<a href="/" class="brand-logo-link" aria-label={label || 'Home'}>
+  <img src="/brand/logo.svg" alt={label} class={className} />
+</a>

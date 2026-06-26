@@ -1,0 +1,28 @@
+---
+import GridLines from './GridLines.astro';
+
+interface Props {
+  showShapes?: boolean;
+}
+
+const { showShapes = true } = Astro.props;
+---
+
+<div class="home-hero__background" aria-hidden="true">
+  <div class="section home-hero__background-layout">
+    <div class="section-content home-hero__background-left"></div>
+    <div class="section-content home-hero__background-right">
+      {showShapes && (
+        <div class="home-hero__background-shapes">
+          <img src="/shapes/d.svg" alt="" loading="eager" />
+          <img src="/shapes/r.svg" alt="" loading="eager" />
+          <img src="/shapes/r.svg" alt="" loading="eager" />
+          <img src="/shapes/d.svg" alt="" loading="eager" />
+          <img src="/shapes/d.svg" alt="" loading="eager" />
+          <img src="/shapes/r.svg" alt="" loading="eager" />
+        </div>
+      )}
+    </div>
+  </div>
+  <GridLines />
+</div>

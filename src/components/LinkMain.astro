@@ -1,0 +1,56 @@
+---
+import TriangleShape from './TriangleShape.astro';
+
+interface Props {
+  label?: string;
+  href?: string;
+  direction?: 'left' | 'right' | 'Left' | 'Right';
+  state?: 'active' | 'inactive' | 'Active' | 'Inactive';
+  type?: 'button' | 'submit' | 'reset';
+  newPage?: boolean;
+}
+
+const {
+  label = 'Home',
+  href,
+  direction = 'left',
+  state = 'active',
+  type = 'button',
+  newPage = false
+} = Astro.props;
+
+const normalizedDirection = direction.toLowerCase() === 'right' ? 'right' : 'left';
+const normalizedState = state.toLowerCase() === 'inactive' ? 'inactive' : 'active';
+const normalizedLabel = label
+  ? label.charAt(0).toUpperCase() + label.slice(1).toLowerCase()
+  : '';
+
+const textColorClass = normalizedState === 'inactive'
+  ? 'text-title-subtle'
+  : 'text-title-strong';
+const paddingClass = normalizedDirection === 'right' ? 'pl-0.5 pr-4' : 'py-0.5 pr-0.5 pl-4';
+const trianglePositionClass = normalizedDirection === 'right' ? 'right-0' : 'left-0';
+const hoverTriangleClass = [
+  'absolute top-0 z-10 h-3 w-3 transition-[width,height,opacity] duration-300 ease-[var(--ease-reveal)]',
+  'group-hover:h-[120px] group-hover:w-[120px]',
+  normalizedState === 'inactive' ? 'opacity-0 group-hover:opacity-100' : 'opacity-100',
+  trianglePositionClass
+].join(' ');
+---
+
+<a
+  class:list={[
+    'group relative py-0.5 inline-flex items-start bg-transparent no-underline cursor-pointer overflow-hidden text-button leading-button tracking-button text-right whitespace-nowrap',
+    paddingClass,
+    textColorClass
+  ]}
+  href={href}
+  type={href ? undefined : type}
+  target={href && newPage ? '_blank' : undefined}
+  rel={href && newPage ? 'noopener noreferrer' : undefined}
+  data-direction={normalizedDirection}
+  data-state={normalizedState}
+>
+  <TriangleShape direction={normalizedDirection} class={hoverTriangleClass} />
+  <span class="relative z-20 group-hover:text-button-dark">{normalizedLabel}</span>
+</a>

@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import GlobalNavigation from '../../components/GlobalNavigation.astro';
+import HeroSectionBackground from '../../components/HeroSectionBackground.astro';
+import WorkCard from '../../components/WorkCard.astro';
+
+interface CaseFrontmatter {
+  title: string;
+  description: string;
+  sector: string;
+  services: string[];
+  order?: number;
+  images: string[];
+}
+
+const caseModules = import.meta.glob('../../content/cases/*.md', { eager: true });
+const cases = Object.entries(caseModules)
+  .map(([path, module]) => {
+    const frontmatter = (module as { frontmatter: CaseFrontmatter }).frontmatter;
+    const slug = path.split('/').pop()?.replace('.md', '') ?? '';
+
+    return {
+      slug,
+      ...frontmatter,
+      image: frontmatter.images[0]
+    };
+  })
+  .sort((a, b) => {
+    const orderA = a.order ?? Number.POSITIVE_INFINITY;
+    const orderB = b.order ?? Number.POSITIVE_INFINITY;
+
+    if (orderA !== orderB) {
+      return orderA - orderB;
+    }
+
+    return a.slug.localeCompare(b.slug, undefined, { numeric: true });
+  });
+---
+
+<BaseLayout title="Work | David Rivadeneyra">
+  <GlobalNavigation />
+  <main>
+    <section class="work-shell">
+      <HeroSectionBackground showShapes={false} />
+
+      <div class="section-content work-shell__content">
+        <header class="work-shell__header">
+          <h1 class="work-shell__title">My recent work</h1>
+        </header>
+
+        <div class="work-grid">
+          {cases.map((caseItem) => (
+            <WorkCard
+              title={caseItem.title}
+              description={caseItem.description}
+              sector={caseItem.sector}
+              services={caseItem.services}
+              image={caseItem.image}
+              href={`/work/${caseItem.slug}`}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

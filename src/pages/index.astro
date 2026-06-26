@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BrandLogo from '../components/BrandLogo.astro';
+import ButtonMain from '../components/ButtonMain.astro';
+import GlobalNavigation from '../components/GlobalNavigation.astro';
+import HeroSectionBackground from '../components/HeroSectionBackground.astro';
+---
+
+<BaseLayout>
+  <GlobalNavigation />
+  <main>
+    <section class="section home-hero" transition:name="home-section">
+      <HeroSectionBackground />
+      <span class="home-hero__headline-bg" aria-hidden="true">
+        <span class="home-hero__headline-track">
+          <span>David Rivadeneyra - Web Brand Designer</span>
+          <span>David Rivadeneyra - Web Brand Designer</span>
+        </span>
+      </span>
+      <img
+        class="home-hero__portrait"
+        src="/brand/davidrivadeneyra.png"
+        alt=""
+        aria-hidden="true"
+      />
+
+      <div class="section-content home-hero__left">
+        <div class="home-hero__content">
+          <div class="home-hero__eyebrow">
+            <BrandLogo size="small" label="" />
+            <p class="home-hero__eyebrow-text">David Rivadeneyra</p>
+          </div>
+          <h1 class="home-hero__title">I build Websites that match your reputation.</h1>
+
+          <ButtonMain />
+        </div>
+      </div>
+      <div class="section-content home-hero__right"></div>
+    </section>
+  </main>
+</BaseLayout>

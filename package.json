@@ -1,0 +1,24 @@
+{
+  "name": "davidrivadeneyra",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npm run tailwind:build && node ./scripts/dev.mjs",
+    "build": "npm run tailwind:build -- --minify && astro build",
+    "preview": "astro preview",
+    "tailwind:build": "tailwindcss -i ./src/styles/input.css -o ./src/styles/output.css",
+    "tailwind:watch": "node ./scripts/tailwind-watch.mjs"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.10",
+    "astro": "^6.4.6",
+    "gsap": "^3.13.0",
+    "tailwindcss": "^4.1.10",
+    "three": "^0.185.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.185.0",
+    "pdf-parse": "^2.4.5"
+  }
+}
