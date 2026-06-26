@@ -29,14 +29,14 @@
   --text-title-regular: 32px;
   --text-title-small: 1rem;
 
-  --text-description-regular: 14px;
+  --text-description-regular: 16px;
   --leading-description-regular: 140%;
 
-  --text-button: 14px;
+  --text-button: 16px;
   --leading-button: 0.5em;
   --tracking-button: -0.64px;
 
-  --layout-gutter: 24px;
+  --layout-gutter: 32px;
 
   --ease-reveal: cubic-bezier(0.625, 0.05, 0, 1);
 }
@@ -352,7 +352,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 8px;
+    gap: 12px;
     mix-blend-mode: exclusion;
     pointer-events: auto;
   }
@@ -371,7 +371,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    overflow: hidden;
+    /* overflow: hidden; */
     margin: 0;
     color: var(--color-bg-surface);
     pointer-events: none;
@@ -791,8 +791,8 @@
 @media (min-width: 1024px) {
   :root {
     --text-title-bigger: 96px;
-    --text-description-regular: 1rem;
-    --text-button: 1rem;
+    --text-description-regular: 18px;
+    --text-button: 18px;
     --layout-gutter: 72px;
   }
 
