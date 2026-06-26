@@ -1,49 +1,14 @@
-<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="description" content="David Rivadeneyra is a web designer and developer specializing in creating websites that match your reputation. Explore his portfolio and services to elevate your online presence."><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="Astro v6.4.6"><link rel="canonical" href="http://localhost:3001/"><link rel="icon" type="image/png" href="/favicon.png"><meta property="og:type" content="website"><meta property="og:url" content="http://localhost:3001/"><meta property="og:title" content="David Rivadeneyra — Web Brand Design &amp; Development"><meta property="og:description" content="David Rivadeneyra is a web designer and developer specializing in creating websites that match your reputation. Explore his portfolio and services to elevate your online presence."><meta property="og:image" content="http://localhost:3001/shapes/open-graph.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="David Rivadeneyra - Web Design & Development"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="David Rivadeneyra — Web Brand Design &amp; Development"><meta name="twitter:description" content="David Rivadeneyra is a web designer and developer specializing in creating websites that match your reputation. Explore his portfolio and services to elevate your online presence."><meta name="twitter:image" content="http://localhost:3001/shapes/open-graph.png"><title>David Rivadeneyra — Web Brand Design &amp; Development</title><script src="https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js"></script><script>(function(){const mixpanelToken = "aac809f91ad62a7638d555013af6b6db";
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="description" content="David Rivadeneyra is a web designer and developer specializing in creating websites that match your reputation. Explore his portfolio and services to elevate your online presence."><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="Astro v6.4.6"><link rel="canonical" href="http://localhost:3001/"><link rel="icon" type="image/png" href="/favicon.png"><meta property="og:type" content="website"><meta property="og:url" content="http://localhost:3001/"><meta property="og:title" content="David Rivadeneyra — Web Brand Design &amp; Development"><meta property="og:description" content="David Rivadeneyra is a web designer and developer specializing in creating websites that match your reputation. Explore his portfolio and services to elevate your online presence."><meta property="og:image" content="http://localhost:3001/shapes/open-graph.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="David Rivadeneyra - Web Design & Development"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="David Rivadeneyra — Web Brand Design &amp; Development"><meta name="twitter:description" content="David Rivadeneyra is a web designer and developer specializing in creating websites that match your reputation. Explore his portfolio and services to elevate your online presence."><meta name="twitter:image" content="http://localhost:3001/shapes/open-graph.png"><title>David Rivadeneyra — Web Brand Design &amp; Development</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CAqDO0tx.js"></script><!-- Paste this right before your closing </head> tag --><script type="text/javascript">
+      (function(e,c){if(!c.__SV){var l,h;window.mixpanel=c;c._i=[];c.init=function(q,r,f){function t(d,a){var g=a.split(".");2==g.length&&(d=d[g[0]],a=g[1]);d[a]=function(){d.push([a].concat(Array.prototype.slice.call(arguments,0)))}}var b=c;"undefined"!==typeof f?b=c[f]=[]:f="mixpanel";b.people=b.people||[];b.toString=function(d){var a="mixpanel";"mixpanel"!==f&&(a+="."+f);d||(a+=" (stub)");return a};b.people.toString=function(){return b.toString(1)+".people (stub)"};l="disable time_event track track_pageview track_links track_forms track_with_groups add_group set_group remove_group register register_once alias unregister identify name_tag set_config reset opt_in_tracking opt_out_tracking has_opted_in_tracking has_opted_out_tracking clear_opt_in_out_tracking start_batch_senders start_session_recording stop_session_recording people.set people.set_once people.unset people.increment people.append people.union people.track_charge people.clear_charges people.delete_user people.remove".split(" ");
+      for(h=0;h<l.length;h++)t(b,l[h]);var n="set set_once union unset remove delete".split(" ");b.get_group=function(){function d(p){a[p]=function(){b.push([g,[p].concat(Array.prototype.slice.call(arguments,0))])}}for(var a={},g=["get_group"].concat(Array.prototype.slice.call(arguments,0)),m=0;m<n.length;m++)d(n[m]);return a};c._i.push([q,r,f])};c.__SV=1.2;var k=e.createElement("script");k.type="text/javascript";k.async=!0;k.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===
+      e.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";e=e.getElementsByTagName("script")[0];e.parentNode.insertBefore(k,e)}})(document,window.mixpanel||[])
 
-      const analyticsWindow = window;
-
-      analyticsWindow.mixpanel?.init(mixpanelToken, {
+      mixpanel.init('aac809f91ad62a7638d555013af6b6db', {
         autocapture: true,
-        debug: import.meta.env.DEV,
-        persistence: 'localStorage',
         record_sessions_percent: 100,
-        track_pageview: false
-      });
+      })
 
-      const getCampaignParams = () => {
-        const params = new URLSearchParams(window.location.search);
-        const campaignParams = {};
-
-        for (const [key, value] of params.entries()) {
-          if (key.startsWith('utm_')) {
-            campaignParams[key] = value;
-          }
-        }
-
-        return campaignParams;
-      };
-
-      let lastTrackedUrl = '';
-
-      const trackPageView = () => {
-        if (lastTrackedUrl === window.location.href) {
-          return;
-        }
-
-        lastTrackedUrl = window.location.href;
-
-        analyticsWindow.mixpanel?.track('Page Viewed', {
-          page_title: document.title,
-          page_path: window.location.pathname,
-          page_url: window.location.href,
-          referrer: document.referrer || null,
-          ...getCampaignParams()
-        });
-      };
-
-      document.addEventListener('astro:page-load', trackPageView);
-      trackPageView();
-    })();</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CAqDO0tx.js"></script><link rel="stylesheet" href="/_astro/HeroSectionBackground.BAhYpdeT.css">
+    </script><link rel="stylesheet" href="/_astro/HeroSectionBackground.BAhYpdeT.css">
 <style>@keyframes astroFadeInOut{0%{opacity:1}to{opacity:0}}@keyframes astroFadeIn{0%{opacity:0;mix-blend-mode:plus-lighter}to{opacity:1;mix-blend-mode:plus-lighter}}@keyframes astroFadeOut{0%{opacity:1;mix-blend-mode:plus-lighter}to{opacity:0;mix-blend-mode:plus-lighter}}@keyframes astroSlideFromRight{0%{transform:translate(100%)}}@keyframes astroSlideFromLeft{0%{transform:translate(-100%)}}@keyframes astroSlideToRight{to{transform:translate(100%)}}@keyframes astroSlideToLeft{to{transform:translate(-100%)}}@media(prefers-reduced-motion){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}[data-astro-transition-scope]{animation:none!important}}
 </style><style>[data-astro-transition-scope="astro-bwabbhoa-1"] { view-transition-name: home-section; }@layer astro { ::view-transition-old(home-section) { 
 	animation-duration: 180ms;

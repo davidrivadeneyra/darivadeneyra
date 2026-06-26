@@ -1,5 +1,3 @@
 # ShipStudio metadata
 .shipstudio/
 node_modules
-.env
-.env*.local
