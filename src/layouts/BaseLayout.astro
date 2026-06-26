@@ -12,7 +12,7 @@ interface Props {
 const {
   title = 'David Rivadeneyra — Web Brand Design & Development',
   description = 'David Rivadeneyra is a web designer and developer specializing in creating websites that match your reputation. Explore his portfolio and services to elevate your online presence.',
-  image = '/shapes/Open%20Graph.png',
+  image = '/shapes/open-graph.png',
   type = 'website'
 } = Astro.props;
 
@@ -56,7 +56,7 @@ const socialImageUrl = new URL(image, Astro.url).toString();
 
       titlePromptWindow.__returnTitlePromptCleanup?.();
 
-      const awayTitle = "Come back - let's work together";
+      const awayTitle = "Psst! Let's talk about your next project";
       let activeTitle = document.title;
 
       const syncActiveTitle = () => {

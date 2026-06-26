@@ -416,6 +416,11 @@
     min-height: 100vh;
     -ms-overflow-style: none;
   }
+  @media (max-width: 1023px) {
+    body {
+      min-height: 100svh;
+    }
+  }
   html::-webkit-scrollbar, body::-webkit-scrollbar {
     display: none;
   }
