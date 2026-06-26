@@ -2,7 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import GlobalNavigation from '../../components/GlobalNavigation.astro';
 import HeroSectionBackground from '../../components/HeroSectionBackground.astro';
-import LinkMain from '../../components/LinkMain.astro';
+import LinkUnderline from '../../components/LinkUnderline.astro';
 
 interface CaseFrontmatter {
   title: string;
@@ -52,7 +52,7 @@ const meta = [frontmatter.sector, ...frontmatter.services].filter(Boolean).join(
 
       <div class="section-content work-shell__content case-shell__content">
         <header class="case-hero">
-          <LinkMain label="Back to work" direction="right" state="active" href="/work" />
+          <!-- <LinkUnderline label="Back to work" state="inactive" href="/work" /> -->
           <p class="work-shell__eyebrow">{meta}</p>
           <h1 class="work-shell__title">{frontmatter.title}</h1>
           <p class="case-hero__description">{frontmatter.description}</p>

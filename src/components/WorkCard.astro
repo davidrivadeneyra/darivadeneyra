@@ -1,5 +1,5 @@
 ---
-import LinkMain from './LinkMain.astro';
+import LinkUnderline from './LinkUnderline.astro';
 
 interface Props {
   title: string;
@@ -30,6 +30,6 @@ const shortDescription = description.length > 128
 
     <p class="work-card__description">{shortDescription}</p>
 
-    <LinkMain label="See project" direction="right" state="active" href={href} />
+    <LinkUnderline label="See project" state="inactive" href={href} />
   </div>
 </article>

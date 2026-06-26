@@ -1,0 +1,54 @@
+---
+const mixpanelToken = import.meta.env.PUBLIC_MIXPANEL_TOKEN;
+---
+
+{mixpanelToken && (
+  <>
+    <script is:inline src="https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js"></script>
+    <script define:vars={{ mixpanelToken }}>
+      const analyticsWindow = window;
+
+      analyticsWindow.mixpanel?.init(mixpanelToken, {
+        autocapture: true,
+        debug: import.meta.env.DEV,
+        persistence: 'localStorage',
+        record_sessions_percent: 100,
+        track_pageview: false
+      });
+
+      const getCampaignParams = () => {
+        const params = new URLSearchParams(window.location.search);
+        const campaignParams = {};
+
+        for (const [key, value] of params.entries()) {
+          if (key.startsWith('utm_')) {
+            campaignParams[key] = value;
+          }
+        }
+
+        return campaignParams;
+      };
+
+      let lastTrackedUrl = '';
+
+      const trackPageView = () => {
+        if (lastTrackedUrl === window.location.href) {
+          return;
+        }
+
+        lastTrackedUrl = window.location.href;
+
+        analyticsWindow.mixpanel?.track('Page Viewed', {
+          page_title: document.title,
+          page_path: window.location.pathname,
+          page_url: window.location.href,
+          referrer: document.referrer || null,
+          ...getCampaignParams()
+        });
+      };
+
+      document.addEventListener('astro:page-load', trackPageView);
+      trackPageView();
+    </script>
+  </>
+)}

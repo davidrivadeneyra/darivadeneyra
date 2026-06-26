@@ -1,5 +1,6 @@
 ---
 import { ClientRouter } from 'astro:transitions';
+import MixpanelAnalytics from '../components/MixpanelAnalytics.astro';
 import '../styles/output.css';
 
 interface Props {
@@ -42,6 +43,7 @@ const socialImageUrl = new URL(image, Astro.url).toString();
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={socialImageUrl} />
     <title>{title}</title>
+    <MixpanelAnalytics />
     <ClientRouter />
   </head>
   <body>
