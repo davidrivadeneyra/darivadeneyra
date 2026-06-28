@@ -44,7 +44,11 @@ const { frontmatter, Content } = casePage;
 const meta = [frontmatter.sector, ...frontmatter.services].filter(Boolean).join(' - ');
 ---
 
-<BaseLayout title={`${frontmatter.title} | David Rivadeneyra`}>
+<BaseLayout
+  title={`${frontmatter.title} | David Rivadeneyra`}
+  description={frontmatter.description}
+  image={frontmatter.images[0]}
+>
   <GlobalNavigation />
   <main>
     <section class="work-shell case-shell">
