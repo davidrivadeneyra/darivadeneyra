@@ -1,0 +1,7 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "23"
+  SECRETS_SCAN_OMIT_KEYS = "PUBLIC_MIXPANEL_TOKEN"
