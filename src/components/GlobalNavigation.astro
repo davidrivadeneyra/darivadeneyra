@@ -5,14 +5,22 @@ import LinkUnderline from './LinkUnderline.astro';
 const pathname = Astro.url.pathname;
 const isHome = pathname === '/';
 const isWork = pathname.startsWith('/work');
+const isCourse = pathname.startsWith('/curso-ui');
 ---
 
-<div class="home-hero__brand">
+<div
+  class="home-hero__brand"
+  data-persistent-navigation
+  transition:persist="global-navigation"
+  transition:name="global-navigation"
+  transition:animate="none"
+>
   <BrandLogo />
 
   <nav class="home-hero__nav items-end justify-end" aria-label="Primary navigation">
-    <LinkUnderline label="Home" state={isHome ? 'active' : 'inactive'} href="/" />
-    <LinkUnderline label="Work" state={isWork ? 'active' : 'inactive'} href="/work" />
+    <LinkUnderline label="Home" state={isHome ? 'active' : 'inactive'} href="/" updateOnPageTransition />
+    <LinkUnderline label="Work" state={isWork ? 'active' : 'inactive'} href="/work" updateOnPageTransition />
+    <LinkUnderline label="Curso" state={isCourse ? 'active' : 'inactive'} href="/curso-ui" updateOnPageTransition />
     <!-- <LinkUnderline label="About" state="inactive" href="/" /> -->
     <LinkUnderline
       label="Let's Talk"
@@ -27,3 +35,77 @@ const isWork = pathname.startsWith('/work');
     <LinkUnderline label="Instagram" state="inactive" href="https://www.instagram.com/davidrivadeneyra/" newPage />
   </div>
 </div>
+
+<script>
+  const persistentNavigationWindow = window as Window & {
+    __persistentNavigationCleanup?: () => void;
+  };
+
+  persistentNavigationWindow.__persistentNavigationCleanup?.();
+
+  const syncNavigationFrom = (root: ParentNode) => {
+    const nextLinks = root.querySelectorAll<HTMLAnchorElement>('[data-page-nav-update]');
+    const currentLinks = document.querySelectorAll<HTMLAnchorElement>(
+      '[data-persistent-navigation] [data-page-nav-update]'
+    );
+
+    currentLinks.forEach((currentLink, index) => {
+      const nextLink = nextLinks[index];
+      if (!nextLink) return;
+
+      currentLink.className = nextLink.className;
+      currentLink.dataset.state = nextLink.dataset.state ?? 'inactive';
+      currentLink.dataset.underlineLink = nextLink.dataset.underlineLink ?? 'true';
+
+      const ariaCurrent = nextLink.getAttribute('aria-current');
+      if (ariaCurrent) {
+        currentLink.setAttribute('aria-current', ariaCurrent);
+      } else {
+        currentLink.removeAttribute('aria-current');
+      }
+    });
+  };
+
+  const updatePersistentNavigation = () => {
+    const pathname = window.location.pathname;
+    const currentLinks = document.querySelectorAll<HTMLAnchorElement>(
+      '[data-persistent-navigation] [data-page-nav-update]'
+    );
+
+    currentLinks.forEach((link) => {
+      const href = link.getAttribute('href') ?? '';
+      const isActive =
+        href === '/'
+          ? pathname === '/'
+          : href !== '' && pathname.startsWith(href);
+
+      link.classList.toggle('underline-link--active', isActive);
+      link.classList.toggle('underline-link--inactive', !isActive);
+      link.dataset.state = isActive ? 'active' : 'inactive';
+      link.dataset.underlineLink = isActive ? 'alt' : 'true';
+
+      if (isActive) {
+        link.setAttribute('aria-current', 'page');
+      } else {
+        link.removeAttribute('aria-current');
+      }
+    });
+  };
+
+  const handleBeforeSwap = (event: Event) => {
+    const transitionEvent = event as Event & { newDocument?: Document };
+
+    if (transitionEvent.newDocument) {
+      syncNavigationFrom(transitionEvent.newDocument);
+    }
+  };
+
+  document.addEventListener('astro:before-swap', handleBeforeSwap);
+  document.addEventListener('astro:page-load', updatePersistentNavigation);
+  updatePersistentNavigation();
+
+  persistentNavigationWindow.__persistentNavigationCleanup = () => {
+    document.removeEventListener('astro:before-swap', handleBeforeSwap);
+    document.removeEventListener('astro:page-load', updatePersistentNavigation);
+  };
+</script>

@@ -1,0 +1,230 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GlobalNavigation from '../components/GlobalNavigation.astro';
+import HeroSectionBackground from '../components/HeroSectionBackground.astro';
+
+const whatsappGroupUrl = 'https://chat.whatsapp.com/Iy6Q1FK7IGP8I6KAf4jDkU?s=cl&p=a&ilr=4';
+
+const learningItems = [
+  'Construir jerarquías visuales claras con tipografía.',
+  'Organizar interfaces con layout, grid, espaciado y alineación.',
+  'Crear paletas de color coherentes, legibles y accesibles.',
+  'Definir una dirección visual para que una web tenga identidad.',
+  'Diseñar una interfaz completa aplicando fundamentos de UI.'
+];
+
+const slideImages = [
+  '/slide%20images/course-01.png',
+  '/slide%20images/course-02.png',
+  '/slide%20images/course-03.png',
+  '/slide%20images/course-04.png'
+];
+
+const modules = [
+  {
+    title: 'Módulo 1: Introducción al Diseño UI',
+    description:
+      'Conoce cómo se desarrollará el curso, qué necesitas para comenzar y por qué el diseño UI es una parte fundamental en la creación de sitios web y productos digitales.',
+    classes: [
+      'Bienvenida al curso',
+      'Cómo funciona el curso',
+      'Qué necesitas para empezar',
+      'Cómo desarrollar una mentalidad de diseñador',
+      'Diferencias entre UI y UX',
+      'Por qué el diseño UI es importante'
+    ]
+  },
+  {
+    title: 'Módulo 2: Tipografía para Interfaces',
+    description:
+      'Aprende a seleccionar tipografías, definir tamaños y pesos, y construir jerarquías que mejoren la claridad, la legibilidad y la personalidad de una interfaz.',
+    classes: [
+      'Conceptos y términos tipográficos',
+      'Cómo definir tamaños tipográficos',
+      'Cómo utilizar los pesos tipográficos',
+      'Jerarquía visual a través de la tipografía',
+      'Tipografía para títulos y descripciones',
+      'Tipografía para botones y navegación',
+      'Cómo combinar tipografías',
+      'Ejercicio práctico de diseño tipográfico'
+    ]
+  },
+  {
+    title: 'Módulo 3: Layout, Espaciado y Alineación',
+    description:
+      'Aprende a organizar los elementos de una interfaz mediante retículas, contenedores, alineaciones y sistemas de espaciado.',
+    classes: [
+      'Introducción al modelo de caja',
+      'Contenedores y estructura de una interfaz',
+      'Fundamentos del grid',
+      'Grid explícito e implícito',
+      'Sistemas de espaciado',
+      'Alineación y distribución de elementos',
+      'Filas, columnas y composición',
+      'Ejercicio práctico de layout y espaciado'
+    ]
+  },
+  {
+    title: 'Módulo 4: Color para Interfaces',
+    description:
+      'Aprende a crear y aplicar paletas de color con intención, manteniendo coherencia visual, legibilidad y suficiente contraste.',
+    classes: [
+      'Psicología y función del color',
+      'El círculo cromático',
+      'Accesibilidad y contraste',
+      'Cómo crear una paleta de color',
+      'Colores principales, secundarios y de apoyo',
+      'Cómo construir tonos y variantes',
+      'Cómo aplicar el color a una interfaz',
+      'Fundamentos del modo oscuro'
+    ]
+  },
+  {
+    title: 'Módulo 5: Identidad y Dirección Visual',
+    description:
+      'Aprende a definir la identidad visual de una web, seleccionar referencias con intención y convertirlas en decisiones concretas de diseño.',
+    classes: [
+      'Por qué una web necesita una dirección visual',
+      'Cómo definir la personalidad de una marca',
+      'Cómo traducir conceptos de marca en recursos visuales',
+      'Qué es un moodboard y para qué sirve',
+      'Cómo buscar y seleccionar referencias',
+      'Cómo analizar referencias sin copiar diseños',
+      'Cómo convertir un moodboard en una interfaz',
+      'Ejercicio práctico de dirección visual'
+    ]
+  }
+];
+
+const finalProjectItems = [
+  'Tipografía',
+  'Jerarquía visual',
+  'Modelo de caja',
+  'Grid',
+  'Espaciado y alineación',
+  'Color',
+  'Identidad visual',
+  'Dirección visual',
+  'Consistencia entre componentes'
+];
+---
+
+<BaseLayout
+  title="Curso de Fundamentos de diseño web | David Rivadeneyra"
+  description="Únete al grupo de WhatsApp del Curso de Fundamentos de Diseño Web de David Rivadeneyra."
+  image="/work/glimmer/main.png"
+>
+  <GlobalNavigation />
+  <main>
+    <section class="course-waitlist">
+      <HeroSectionBackground showShapes={false} />
+
+      <div class="section-content course-waitlist__content">
+        <section class="course-waitlist__signup" aria-labelledby="course-waitlist-title">
+          <div class="course-waitlist__intro">
+            <h1 id="course-waitlist-title" class="course-waitlist__title">
+              Curso de Fundamentos de Diseño Web
+            </h1>
+            <div class="course-learnings" aria-labelledby="course-learnings-title">
+              <h2 id="course-learnings-title">Qué aprenderás</h2>
+              <ul>
+                {learningItems.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <a
+            class="button-main course-waitlist__button"
+            href={whatsappGroupUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-animate="button-main"
+          >
+            <span class="button-main__background" aria-hidden="true"></span>
+            <span class="button-main__inner">
+              <span class="button-main__triangle" aria-hidden="true"></span>
+              Unirme al grupo
+            </span>
+          </a>
+        </section>
+
+        <article class="course-card" aria-labelledby="course-title">
+          <div class="course-card__media" aria-hidden="true">
+            {slideImages.map((image, index) => (
+              <img
+                class="course-card__slide"
+                src={image}
+                alt=""
+                loading={index === 0 ? 'eager' : 'lazy'}
+                style={`--slide-delay: ${index * 4}s;`}
+              />
+            ))}
+          </div>
+
+          <div class="course-card__body">
+            <div class="course-card__header">
+              <p class="course-card__label">Curso</p>
+              <h2 id="course-title">Fundamentos de Diseño Web</h2>
+              <p>
+                Diseña webs con mejor tipografía, layout, color, dirección visual y consistencia.
+              </p>
+            </div>
+
+            <div class="course-syllabus">
+              {modules.map((module) => (
+                <section class="course-module">
+                  <div class="course-module__header">
+                    <h3>{module.title}</h3>
+                    <p>{module.description}</p>
+                  </div>
+                  <ul class="course-lessons" aria-label={`Clases de ${module.title}`}>
+                    {module.classes.map((lesson) => (
+                      <li>
+                        <span class="course-lessons__play">
+                          <i data-lucide="play" aria-hidden="true"></i>
+                        </span>
+                        <span>{lesson}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              ))}
+
+              <section class="course-module course-module--final">
+                <div class="course-module__header">
+                  <h3>Proyecto Final</h3>
+                  <p>
+                    Diseño completo de una interfaz aplicando los fundamentos aprendidos durante el curso.
+                  </p>
+                </div>
+                <ul class="course-lessons course-lessons--compact" aria-label="Temas del proyecto final">
+                  {finalProjectItems.map((item) => (
+                    <li>
+                      <span class="course-lessons__play">
+                        <i data-lucide="play" aria-hidden="true"></i>
+                      </span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    import { createIcons, Play } from 'lucide';
+
+    const setupCourseWaitlist = () => {
+      createIcons({ icons: { Play } });
+    };
+
+    document.addEventListener('astro:page-load', setupCourseWaitlist);
+    setupCourseWaitlist();
+  </script>
+</BaseLayout>

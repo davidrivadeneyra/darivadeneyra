@@ -5,6 +5,7 @@ interface Props {
   state?: 'active' | 'inactive' | 'Active' | 'Inactive';
   type?: 'button' | 'submit' | 'reset';
   newPage?: boolean;
+  updateOnPageTransition?: boolean;
 }
 
 const {
@@ -12,7 +13,8 @@ const {
   href,
   state = 'inactive',
   type = 'button',
-  newPage = false
+  newPage = false,
+  updateOnPageTransition = false
 } = Astro.props;
 
 const normalizedState = state.toLowerCase() === 'active' ? 'active' : 'inactive';
@@ -31,7 +33,9 @@ const underlineMode = normalizedState === 'active' ? 'alt' : true;
   type={href ? undefined : type}
   target={href && newPage ? '_blank' : undefined}
   rel={href && newPage ? 'noopener noreferrer' : undefined}
+  aria-current={normalizedState === 'active' ? 'page' : undefined}
   data-underline-link={underlineMode}
+  data-page-nav-update={updateOnPageTransition ? '' : undefined}
   data-state={normalizedState}
 >
   {normalizedLabel}
