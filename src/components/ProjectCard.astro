@@ -1,0 +1,32 @@
+---
+import { ArrowRight } from '@lucide/astro';
+import { isProjectVideo } from '../lib/project-media';
+
+interface Props {
+  title: string;
+  services: string;
+  media: string;
+  href: string;
+  alt: string;
+  tags?: string[];
+}
+
+const { title, services, media, href, alt, tags = [] } = Astro.props;
+---
+
+<article class="project-card" data-animate="project-card" data-project-tags={tags.join(' ')}>
+  <div class="project-card__meta">
+    <h3>{title}</h3>
+    <p>{services}</p>
+  </div>
+  <a class="project-card__media" href={href} aria-label={`See ${title} case study`} data-transition-title={title}>
+    {isProjectVideo(media) ? (
+      <video src={media} aria-label={alt} autoplay muted loop playsinline preload="metadata"></video>
+    ) : (
+      <img src={media} alt={alt} loading="lazy" />
+    )}
+  </a>
+  <a class="project-card__action" href={href} aria-label={`See ${title} case study`} data-transition-title={title}>
+    <ArrowRight aria-hidden="true" stroke-width={1.5} />
+  </a>
+</article>

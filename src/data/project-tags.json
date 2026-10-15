@@ -1,0 +1,14 @@
+[
+  {
+    "id": "product-design",
+    "label": "Product design"
+  },
+  {
+    "id": "web-design",
+    "label": "Web design"
+  },
+  {
+    "id": "development",
+    "label": "Development"
+  }
+]

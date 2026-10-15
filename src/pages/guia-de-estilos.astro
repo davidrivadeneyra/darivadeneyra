@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BrandMark from '../components/BrandMark.astro';
+import ButtonMain from '../components/ButtonMain.astro';
+---
+
+<BaseLayout title="Style Guide — David Rivadeneyra" transitionTitle="Style Guide">
+  <main class="style-guide section-shell">
+    <header class="style-guide__header"><BrandMark /><a href="/">Back to home</a></header>
+    <section class="style-guide__section">
+      <p class="eyebrow">/ Typography</p>
+      <h1 class="type-display">Creative Web Designer &amp; Developer</h1>
+      <h2 class="type-h2">Creative Web Designer &amp; Developer</h2>
+      <h3 class="type-h3">Creative Web Designer &amp; Developer</h3>
+      <p class="type-body">Creative Web Designer &amp; Developer</p>
+      <p class="eyebrow">/ Recent projects</p>
+    </section>
+    <section class="style-guide__section">
+      <p class="eyebrow">/ Buttons</p>
+      <div class="style-guide__row"><ButtonMain label="Button" /><ButtonMain label="Button" variant="light" /><ButtonMain label="Button" variant="outline" /></div>
+    </section>
+    <section class="style-guide__section">
+      <p class="eyebrow">/ Color</p>
+      <div class="swatches">
+        <div><span style="background:#F5F8FD"></span><code>#F5F8FD</code></div>
+        <div><span style="background:#1C2129"></span><code>#1C2129</code></div>
+        <div><span style="background:#DFE2E7"></span><code>#DFE2E7</code></div>
+        <div><span style="background:#595F68"></span><code>#595F68</code></div>
+      </div>
+    </section>
+    <section class="style-guide__section">
+      <p class="eyebrow">/ Brand assets</p>
+      <div class="style-guide__brand"><BrandMark /><img src="/images/brand/davidrivadeneyra-logo.png" alt="David Rivadeneyra" /></div>
+    </section>
+  </main>
+</BaseLayout>

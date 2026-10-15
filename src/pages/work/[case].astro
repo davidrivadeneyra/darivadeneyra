@@ -1,0 +1,136 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import FooterMeta from '../../components/FooterMeta.astro';
+import HoverText from '../../components/HoverText.astro';
+import { ArrowRightToLine, SquareArrowOutUpRight } from '@lucide/astro';
+import { isProjectVideo, resolveProjectMedia } from '../../lib/project-media';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({ params: { case: project.id }, props: { project } }));
+}
+
+const { project } = Astro.props;
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const currentIndex = projects.findIndex((item) => item.id === project.id);
+const nextProject = projects.length > 1 ? projects[(currentIndex + 1) % projects.length] : undefined;
+const siteValue = project.data.externalUrl ?? project.data.siteText ?? '—';
+let externalHref: string | undefined;
+
+try {
+  const url = new URL(siteValue);
+  if (url.protocol === 'http:' || url.protocol === 'https:') externalHref = url.href;
+} catch {
+  externalHref = undefined;
+}
+
+const siteLabel = externalHref
+  ? new URL(externalHref).hostname.replace(/^www\./, '')
+  : siteValue;
+---
+
+<BaseLayout title={`${project.data.title} — David Rivadeneyra`} description={project.data.excerpt} transitionTitle={project.data.title}>
+  <main>
+    <section class="case-page-hero">
+      <Header />
+      <div class="case-page-hero__content" data-animate="hero">
+        <div class="case-page-hero__title">
+          <h1>{project.data.title}</h1>
+        </div>
+        <dl class="case-meta">
+          <div><dt>/ Role - Services</dt><dd>{project.data.services}</dd></div>
+          <div><dt>/ Location &amp; year</dt><dd>{project.data.location} © {project.data.year}</dd></div>
+          <div>
+            <dt>/ Ir al sitio</dt>
+            <dd>
+              {externalHref ? (
+                <a
+                  class="case-meta__site-link"
+                  href={externalHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-text-hover
+                  data-text-cycle="0"
+                >
+                  <span class="case-meta__site-text">
+                    <HoverText text={siteLabel} />
+                  </span>
+                  <SquareArrowOutUpRight aria-hidden="true" stroke-width={1.5} />
+                </a>
+              ) : siteLabel}
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <div class="case-gallery">
+      {project.data.images.map((media, index) => (
+        <section
+          class:list={['case-visual', !media.background && 'case-visual--full']}
+          style={media.background ? `background-color: ${media.background}` : undefined}
+        >
+          {isProjectVideo(media.src) ? (
+            <video
+              class="case-visual__media"
+              src={resolveProjectMedia(media.src)}
+              aria-label={media.alt ?? `${project.data.title} project video ${index + 1}`}
+              autoplay
+              muted
+              loop
+              playsinline
+              preload="metadata"
+            ></video>
+          ) : (
+            <img
+              class="case-visual__media"
+              src={resolveProjectMedia(media.src)}
+              alt={media.alt ?? `${project.data.title} project view ${index + 1}`}
+              loading={index === 0 ? 'eager' : 'lazy'}
+            />
+          )}
+        </section>
+      ))}
+    </div>
+
+    {nextProject && (
+      <section class="case-next" data-header-theme="dark">
+        <p class="eyebrow">/ Siguiente proyecto</p>
+        <a
+          class="case-next__project-card"
+          href={`/work/${nextProject.id}`}
+          data-transition-title={nextProject.data.title}
+          data-text-hover
+          data-text-cycle="0"
+          data-animate="image-card"
+          aria-label={`See ${nextProject.data.title} project`}
+        >
+          <h2>{nextProject.data.title}</h2>
+          <span class="case-next__card">
+            {isProjectVideo(nextProject.data.cardImage) ? (
+              <video
+                src={resolveProjectMedia(nextProject.data.cardImage)}
+                aria-label={nextProject.data.cardAlt}
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+              ></video>
+            ) : (
+              <img src={resolveProjectMedia(nextProject.data.cardImage)} alt={nextProject.data.cardAlt} />
+            )}
+          </span>
+          <span class="case-next__link" aria-hidden="true">
+            <span class="case-next__link-text"><HoverText text="See project" /></span>
+            <ArrowRightToLine aria-hidden="true" stroke-width={1.5} />
+          </span>
+        </a>
+      </section>
+    )}
+
+    <footer class="footer case-footer" data-header-theme="dark"><FooterMeta /></footer>
+  </main>
+</BaseLayout>

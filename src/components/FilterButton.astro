@@ -1,0 +1,22 @@
+---
+import HoverText from './HoverText.astro';
+
+interface Props {
+  label: string;
+  value: string;
+  active?: boolean;
+}
+
+const { label, value, active = false } = Astro.props;
+---
+
+<button
+  class:list={['filter-button', active && 'filter-button--active']}
+  type="button"
+  data-filter={value}
+  data-text-hover
+  data-text-cycle="0"
+  aria-pressed={active}
+>
+  <HoverText text={label} />
+</button>

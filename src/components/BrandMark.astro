@@ -1,0 +1,16 @@
+---
+interface Props { label?: string; }
+const { label = 'David Rivadeneyra, home' } = Astro.props;
+---
+
+<a class="brand-mark" href="/" aria-label={label} data-transition-title="Home">
+  <img class="brand-mark__portrait" src="/images/brand/davidrivadeneyra-logo.png" alt="" />
+  <span class="brand-mark__glyph" aria-hidden="true">
+    <img class="brand-mark__glyph-dark" src="/images/brand/david.svg" alt="" />
+    <img class="brand-mark__glyph-light" src="/images/brand/david-light.svg" alt="" />
+  </span>
+  <span class="brand-mark__glyph" aria-hidden="true">
+    <img class="brand-mark__glyph-dark" src="/images/brand/rivadeneyra.svg" alt="" />
+    <img class="brand-mark__glyph-light" src="/images/brand/rivadeneyra-light.svg" alt="" />
+  </span>
+</a>

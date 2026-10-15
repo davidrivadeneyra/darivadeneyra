@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import ButtonMain from '../components/ButtonMain.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import Footer from '../components/Footer.astro';
+import SocialProof from '../components/SocialProof.astro';
+import { getCollection } from 'astro:content';
+import { resolveProjectMedia } from '../lib/project-media';
+
+const projects = (await getCollection('projects'))
+  .filter((project) => project.data.showOnHome)
+  .sort((a, b) => (a.data.homeOrder ?? 99) - (b.data.homeOrder ?? 99))
+  .slice(0, 3);
+---
+
+<BaseLayout transitionTitle="Home">
+  <main>
+    <section class="hero" id="about">
+      <Header />
+      <div class="hero__content" data-animate="hero">
+        <h1><span>Creative Web</span><span>Designer &amp; Developer</span></h1>
+        <p>Crafting high-converting digital products for ambitious B2B brands.</p>
+        <ButtonMain label="Book a Call" />
+      </div>
+    </section>
+
+    <section class="work section-shell" id="work">
+      <p class="eyebrow eyebrow--center">/ Recent projects</p>
+      <div class="work__list">
+        {projects.map((project) => (
+          <ProjectCard
+            title={project.data.title}
+            services={project.data.services}
+            media={resolveProjectMedia(project.data.cardImage)}
+            href={`/work/${project.id}`}
+            alt={project.data.cardAlt}
+            tags={project.data.tags}
+          />
+        ))}
+      </div>
+      <ButtonMain label="View all projects" href="/work" variant="outline" transitionTitle="Work" />
+    </section>
+
+    <SocialProof />
+
+    <Footer />
+  </main>
+</BaseLayout>

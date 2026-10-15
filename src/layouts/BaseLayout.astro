@@ -1,0 +1,39 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import PageTransition from '../components/PageTransition.astro';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  transitionTitle?: string;
+}
+
+const {
+  title = 'David Rivadeneyra — Creative Web Designer & Developer',
+  description = 'Crafting high-converting digital products for ambitious B2B brands.',
+  transitionTitle = 'Home'
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <meta name="page-transition-title" content={transitionTitle} />
+    <link rel="icon" href="/images/brand/davidrivadeneyra-logo.png" type="image/png" />
+    <title>{title}</title>
+    <ClientRouter />
+  </head>
+  <body>
+    <slot />
+    <PageTransition />
+    <script>
+      import '../scripts/animations';
+      import '../scripts/page-transition';
+      import '../scripts/smooth-scroll';
+    </script>
+  </body>
+</html>

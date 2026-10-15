@@ -1,0 +1,229 @@
+---
+import { getCollection } from 'astro:content';
+import { ArrowLeft, ArrowRight } from '@lucide/astro';
+
+const clientKeys = [
+  'profitpto',
+  'tortastudios',
+  'glimmer',
+  'factucore',
+  'xulstech',
+  'dawn',
+  'halfbytegames',
+  'bedit',
+  'azurawebs',
+  'adquiria',
+  'agrosol',
+  'cortex',
+  'cr',
+  'edteam',
+  'hypernova',
+  'martiarzuaga',
+  'matiasbets',
+  'optimizance',
+  'panama',
+  'partywaiver',
+  'zenq'
+];
+
+const clientLogos = clientKeys.map((key) => ({
+  key,
+  name: key.replace(/[-_]/g, ' ').replace(/\b\w/g, (letter) => letter.toUpperCase()),
+  src: `/images/clients/${key}.svg`
+}));
+
+const visibleLogos = clientLogos.slice(0, 9);
+const testimonials = (await getCollection('testimonials')).sort((a, b) => a.data.order - b.data.order);
+const testimonialTotal = testimonials.length;
+const formatCounter = (value: number) => String(value).padStart(2, '0');
+---
+
+<section class="social-proof section-shell" data-header-theme="dark">
+  <div class="social-proof__copy">
+    <div>
+      <p class="eyebrow eyebrow--light">/ Social proof</p>
+      <h2>They trust in my work</h2>
+    </div>
+    <section class="testimonial-carousel" aria-label="Testimonials" data-testimonial-carousel>
+      <div class="testimonial-carousel__header">
+        <p>/ Testimonio</p>
+        <p aria-live="polite"><span data-testimonial-current>{formatCounter(1)}</span> / {formatCounter(testimonialTotal)}</p>
+      </div>
+
+      <div class="testimonial-carousel__body">
+        <div class="testimonial-progress" aria-hidden="true">
+          <span data-testimonial-progress></span>
+        </div>
+
+        <div class="testimonial-carousel__identity-row">
+          <div class="testimonial-carousel__slides">
+            {testimonials.map((testimonial, index) => (
+              <figure class="testimonial-slide" data-testimonial-slide hidden={index !== 0}>
+                <figcaption>
+                  <img src={testimonial.data.image.src} alt="" width="40" height="40" />
+                  <span>
+                    <strong>{testimonial.data.name}</strong>
+                    <small>{testimonial.data.position}</small>
+                  </span>
+                </figcaption>
+                <blockquote>{testimonial.data.message}</blockquote>
+              </figure>
+            ))}
+          </div>
+
+          <div class="testimonial-carousel__controls">
+            <button type="button" aria-label="Testimonio anterior" data-testimonial-prev>
+              <ArrowLeft aria-hidden="true" size={20} stroke-width={1.75} />
+            </button>
+            <button type="button" aria-label="Siguiente testimonio" data-testimonial-next>
+              <ArrowRight aria-hidden="true" size={20} stroke-width={1.75} />
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="client-grid" data-clients-logos data-logos={JSON.stringify(clientLogos)} aria-label="Selected clients">
+    {visibleLogos.map((logo) => (
+      <div class="client-logo-card" data-client-logo-slot>
+        <div class="client-logo-card__window">
+          <div class="client-logo-card__track">
+            <div class="client-logo-card__line">
+              <img src={logo.src} alt={logo.name} loading="lazy" />
+            </div>
+            <div class="client-logo-card__line" aria-hidden="true">
+              <img src={logo.src} alt="" loading="lazy" />
+            </div>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<script>
+  type ClientLogo = {
+    key: string;
+    name: string;
+    src: string;
+  };
+
+  function initTestimonials() {
+    document.querySelectorAll<HTMLElement>('[data-testimonial-carousel]').forEach((carousel) => {
+      if (carousel.dataset.testimonialReady === 'true') return;
+
+      const slides = Array.from(carousel.querySelectorAll<HTMLElement>('[data-testimonial-slide]'));
+      const current = carousel.querySelector<HTMLElement>('[data-testimonial-current]');
+      const progress = carousel.querySelector<HTMLElement>('[data-testimonial-progress]');
+      const previous = carousel.querySelector<HTMLButtonElement>('[data-testimonial-prev]');
+      const next = carousel.querySelector<HTMLButtonElement>('[data-testimonial-next]');
+      if (!slides.length || !current || !progress || !previous || !next) return;
+
+      carousel.dataset.testimonialReady = 'true';
+      let activeIndex = 0;
+      let progressAnimation: Animation | undefined;
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      function startCounter() {
+        progressAnimation?.cancel();
+        progress!.style.transform = 'scaleX(0)';
+        if (reduceMotion) return;
+
+        progressAnimation = progress!.animate(
+          [{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }],
+          { duration: 8000, easing: 'linear', fill: 'forwards' }
+        );
+        progressAnimation.addEventListener('finish', () => showTestimonial(activeIndex + 1), { once: true });
+      }
+
+      function showTestimonial(index: number) {
+        activeIndex = (index + slides.length) % slides.length;
+        slides.forEach((slide, slideIndex) => {
+          slide.hidden = slideIndex !== activeIndex;
+        });
+        current!.textContent = String(activeIndex + 1).padStart(2, '0');
+        startCounter();
+      }
+
+      previous.addEventListener('click', () => showTestimonial(activeIndex - 1));
+      next.addEventListener('click', () => showTestimonial(activeIndex + 1));
+      startCounter();
+
+      document.addEventListener('astro:before-preparation', () => progressAnimation?.cancel(), { once: true });
+    });
+  }
+
+  function initClientsLogos() {
+    document.querySelectorAll<HTMLElement>('[data-clients-logos]').forEach((section) => {
+      if (section.dataset.clientsLogosReady === 'true') return;
+
+      const logos = JSON.parse(section.dataset.logos || '[]') as ClientLogo[];
+      const slots = Array.from(section.querySelectorAll<HTMLElement>('[data-client-logo-slot]'));
+      if (logos.length <= slots.length || slots.length !== 9) return;
+
+      section.dataset.clientsLogosReady = 'true';
+
+      let poolIndex = slots.length;
+      let previousSlot = -1;
+      let timeout: number | undefined;
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      function nextLogo() {
+        const logo = logos[poolIndex % logos.length];
+        poolIndex += 1;
+        return logo;
+      }
+
+      function randomSlot() {
+        let index = Math.floor(Math.random() * slots.length);
+        if (index === previousSlot) index = (index + 1) % slots.length;
+        previousSlot = index;
+        return slots[index];
+      }
+
+      function cycleLogo() {
+        const slot = randomSlot();
+        const track = slot.querySelector<HTMLElement>('.client-logo-card__track');
+        const currentImage = track?.children[0]?.querySelector<HTMLImageElement>('img');
+        const nextImage = track?.children[1]?.querySelector<HTMLImageElement>('img');
+        if (!track || !currentImage || !nextImage) return;
+
+        const logo = nextLogo();
+        nextImage.src = logo.src;
+        nextImage.alt = '';
+        slot.dataset.animating = 'true';
+
+        window.setTimeout(() => {
+          currentImage.src = logo.src;
+          currentImage.alt = logo.name;
+          slot.dataset.resetting = 'true';
+          slot.dataset.animating = 'false';
+
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              slot.dataset.resetting = 'false';
+            });
+          });
+        }, 540);
+      }
+
+      function scheduleNextCycle() {
+        timeout = window.setTimeout(() => {
+          cycleLogo();
+          scheduleNextCycle();
+        }, 250 + Math.random() * 900);
+      }
+
+      if (!reduceMotion) scheduleNextCycle();
+
+      document.addEventListener('astro:before-preparation', () => {
+        if (timeout) window.clearTimeout(timeout);
+      }, { once: true });
+    });
+  }
+
+  initClientsLogos();
+  initTestimonials();
+  document.addEventListener('astro:page-load', initClientsLogos);
+  document.addEventListener('astro:page-load', initTestimonials);
+</script>

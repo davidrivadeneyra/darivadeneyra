@@ -1,0 +1,89 @@
+---
+import BrandMark from './BrandMark.astro';
+import HoverText from './HoverText.astro';
+import { WHATSAPP_URL } from '../data/contact';
+---
+
+<header class="site-header" data-animate="header">
+  <BrandMark />
+  <nav class="segment" aria-label="Main navigation" data-main-nav>
+    <a class="segment__item segment__item--active" href="/#about" aria-current="page" data-transition-title="Home" data-text-hover data-text-cycle="0"><HoverText text="Home" /></a>
+    <a class="segment__item" href="/work" data-transition-title="Work" data-text-hover data-text-cycle="0"><HoverText text="Work" /></a>
+  </nav>
+  <a class="segment__item header-cta" href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" data-text-hover data-text-cycle="0"><HoverText text="Book a Call" /></a>
+</header>
+
+<script>
+  function setActiveNavItem(activeLink: HTMLAnchorElement) {
+    const nav = activeLink.closest<HTMLElement>('[data-main-nav]');
+    if (!nav) return;
+
+    nav.querySelectorAll<HTMLAnchorElement>('.segment__item').forEach((link) => {
+      const isActive = link === activeLink;
+      link.classList.toggle('segment__item--active', isActive);
+
+      if (isActive) link.setAttribute('aria-current', 'page');
+      else link.removeAttribute('aria-current');
+    });
+  }
+
+  function syncHeaderNav() {
+    document.querySelectorAll<HTMLElement>('[data-main-nav]').forEach((nav) => {
+      const links = Array.from(nav.querySelectorAll<HTMLAnchorElement>('.segment__item'));
+      const isWorkPage = window.location.pathname.startsWith('/work');
+      const activeHref = isWorkPage ? '/work' : '/#about';
+      const activeLink = links.find((link) => link.getAttribute('href') === activeHref) ?? links[0];
+
+      if (activeLink) setActiveNavItem(activeLink);
+
+      links.forEach((link) => {
+        if (link.dataset.navStateReady === 'true') return;
+        link.dataset.navStateReady = 'true';
+        link.addEventListener('click', () => setActiveNavItem(link));
+      });
+    });
+  }
+
+  function initHeaderSurface() {
+    document.querySelectorAll<HTMLElement>('.site-header').forEach((header) => {
+      if (header.dataset.surfaceReady === 'true') return;
+      header.dataset.surfaceReady = 'true';
+
+      let animationFrame = 0;
+
+      function updateSurface() {
+        animationFrame = 0;
+        const headerRect = header.getBoundingClientRect();
+        const probeY = headerRect.top + headerRect.height / 2;
+        const darkSurface = Array.from(document.querySelectorAll<HTMLElement>('[data-header-theme="dark"]')).some((surface) => {
+          const rect = surface.getBoundingClientRect();
+          return rect.top <= probeY && rect.bottom >= probeY;
+        });
+
+        header.dataset.scrolled = String(window.scrollY > 24);
+        header.dataset.surface = darkSurface ? 'dark' : 'light';
+      }
+
+      function scheduleUpdate() {
+        if (animationFrame) return;
+        animationFrame = window.requestAnimationFrame(updateSurface);
+      }
+
+      window.addEventListener('scroll', scheduleUpdate, { passive: true });
+      window.addEventListener('resize', scheduleUpdate);
+      updateSurface();
+
+      document.addEventListener('astro:before-preparation', () => {
+        window.removeEventListener('scroll', scheduleUpdate);
+        window.removeEventListener('resize', scheduleUpdate);
+        if (animationFrame) window.cancelAnimationFrame(animationFrame);
+      }, { once: true });
+    });
+  }
+
+  syncHeaderNav();
+  initHeaderSurface();
+  window.addEventListener('hashchange', syncHeaderNav);
+  document.addEventListener('astro:page-load', syncHeaderNav);
+  document.addEventListener('astro:page-load', initHeaderSurface);
+</script>

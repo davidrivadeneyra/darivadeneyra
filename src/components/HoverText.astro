@@ -1,0 +1,56 @@
+---
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+---
+
+<span class="hover-text__sizer">{text}</span>
+<span class="hover-text__window" aria-hidden="true">
+  <span class="hover-text__track">
+    <span class="hover-text__line">{text}</span>
+    <span class="hover-text__line">{text}</span>
+  </span>
+</span>
+
+<script>
+  function initHoverText() {
+    const controls = document.querySelectorAll<HTMLElement>('[data-text-hover]');
+
+    controls.forEach((control) => {
+      if (control.dataset.textHoverReady === 'true') return;
+
+      const track = control.querySelector<HTMLElement>('.hover-text__track');
+      if (!track) return;
+
+      control.dataset.textHoverReady = 'true';
+      control.dataset.animating = 'false';
+      control.dataset.resetting = 'false';
+
+      control.addEventListener('mouseenter', () => {
+        if (control.dataset.animating === 'true') return;
+
+        control.dataset.animating = 'true';
+        control.dataset.resetting = 'false';
+      });
+
+      track.addEventListener('transitionend', (event) => {
+        if (event.propertyName !== 'transform') return;
+
+        control.dataset.animating = 'false';
+        control.dataset.resetting = 'true';
+        control.dataset.textCycle = String(Number(control.dataset.textCycle || 0) + 1);
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            control.dataset.resetting = 'false';
+          });
+        });
+      });
+    });
+  }
+
+  initHoverText();
+  document.addEventListener('astro:page-load', initHoverText);
+</script>

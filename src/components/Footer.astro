@@ -1,0 +1,19 @@
+---
+import ButtonMain from './ButtonMain.astro';
+import FooterMeta from './FooterMeta.astro';
+import { WHATSAPP_URL } from '../data/contact';
+---
+
+<footer class="footer" id="services" data-header-theme="dark">
+  <div class="footer__cta section-shell">
+    <div class="footer__heading">
+      <p class="eyebrow">/ Get in touch with us</p>
+      <h2>Ready to<br />Get Started?</h2>
+    </div>
+    <div class="footer__actions">
+      <ButtonMain label="hey@davidrivadeneyra.com" href="mailto:hey@davidrivadeneyra.com" variant="outline" size="compact" />
+      <ButtonMain label="Book a Call" href={WHATSAPP_URL} variant="light" size="compact" />
+    </div>
+  </div>
+  <FooterMeta />
+</footer>

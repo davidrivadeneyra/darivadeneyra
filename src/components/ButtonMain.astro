@@ -1,0 +1,40 @@
+---
+import HoverText from './HoverText.astro';
+import { WHATSAPP_URL } from '../data/contact';
+
+interface Props {
+  label?: string;
+  href?: string;
+  variant?: 'dark' | 'light' | 'outline';
+  newPage?: boolean;
+  transitionTitle?: string;
+  size?: 'standard' | 'compact';
+  class?: string;
+}
+
+const {
+  label = 'Book a call',
+  href = WHATSAPP_URL,
+  variant = 'dark',
+  newPage = false,
+  transitionTitle,
+  size = 'standard',
+  class: className = ''
+} = Astro.props;
+
+const opensNewPage = newPage || href === WHATSAPP_URL;
+---
+
+<a
+  class:list={['button-main', `button-main--${variant}`, `button-main--${size}`, className]}
+  href={href}
+  target={opensNewPage ? '_blank' : undefined}
+  rel={opensNewPage ? 'noopener noreferrer' : undefined}
+  data-transition-title={transitionTitle}
+  data-text-hover
+  data-text-cycle="0"
+>
+  <span class="button-main__inner">
+    <HoverText text={label} />
+  </span>
+</a>
