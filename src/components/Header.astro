@@ -7,7 +7,7 @@ import { WHATSAPP_URL } from '../data/contact';
 <header class="site-header" data-animate="header">
   <BrandMark />
   <nav class="segment" aria-label="Main navigation" data-main-nav>
-    <a class="segment__item segment__item--active" href="/#about" aria-current="page" data-transition-title="Home" data-text-hover data-text-cycle="0"><HoverText text="Home" /></a>
+    <a class="segment__item segment__item--active" href="/" aria-current="page" data-transition-title="Home" data-text-hover data-text-cycle="0"><HoverText text="Home" /></a>
     <a class="segment__item" href="/work" data-transition-title="Work" data-text-hover data-text-cycle="0"><HoverText text="Work" /></a>
   </nav>
   <a class="segment__item header-cta" href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" data-text-hover data-text-cycle="0"><HoverText text="Book a Call" /></a>
@@ -31,7 +31,7 @@ import { WHATSAPP_URL } from '../data/contact';
     document.querySelectorAll<HTMLElement>('[data-main-nav]').forEach((nav) => {
       const links = Array.from(nav.querySelectorAll<HTMLAnchorElement>('.segment__item'));
       const isWorkPage = window.location.pathname.startsWith('/work');
-      const activeHref = isWorkPage ? '/work' : '/#about';
+      const activeHref = isWorkPage ? '/work' : '/';
       const activeLink = links.find((link) => link.getAttribute('href') === activeHref) ?? links[0];
 
       if (activeLink) setActiveNavItem(activeLink);
